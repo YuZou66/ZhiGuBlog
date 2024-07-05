@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>资讯</title>
+    <link rel="stylesheet" href="../../css/element.css">
+    <link rel="stylesheet" href="../../css/base.css">
+</head>
+<style>
+    body {
+        background-color: #f5f7fa;
+    }
+    .el-header {
+        background: #1976D2;
+        color: #fff;
+        text-align: center;
+        font-size: 14px;
+        padding: 20px 0;
+    }
+    .el-menu-item {
+        color: #fff !important;
+    }
+    .el-main {
+        padding: 20px;
+    }
+    .el-card {
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        margin-bottom: 20px;
+    }
+    .el-card__header {
+        font-size: 20px;
+        font-weight: bold;
+        border-bottom: 1px solid #ebeef5;
+        padding: 10px 0;
+    }
+    .info-block {
+        margin-top: 20px;
+        font-size: 16px;
+    }
+    .info-item a {
+        text-decoration: none;
+        color: #333;
+    }
+    .info-item a:hover {
+        text-decoration: underline;
+    }
+    .el-button--plain {
+        background-color: #1976D2;
+        color: #fff;
+    }
+</style>
+<body>
+<div id="wrapper" v-cloak>
+    <el-container>
+        <el-header style="background: #0593D3">
+            <el-row style="height: 100%;" type="flex" justify="center" align="middle">
+                <el-col :span="5">
+                    <div style="color: white; text-align: center; font-size: 24px;">
+                        智谷博客
+                    </div>
+                </el-col>
+                <el-col :span="16">
+                    <el-menu
+                            :default-active="src"
+                            mode="horizontal"
+                            @select="handleSelect"
+                            class="el-menu-demo"
+                            background-color="#0593D3"
+                            text-color="#fff"
+                            active-text-color="#fff"
+                    >
+                        <el-menu-item index="index.html">首页</el-menu-item>
+                        <el-menu-item index="blog.html">推荐</el-menu-item>
+                        <el-menu-item index="resource.html">资讯</el-menu-item>
+                        <el-menu-item index="message.html">问答</el-menu-item>
+                    </el-menu>
+                </el-col>
+                <el-col :span="4">
+                    <div v-if="user.id">
+                        <span style="color: white">{{user.username}}&nbsp;&nbsp;</span>
+                        <el-button type="primary" size="mini" @click="logout">退出</el-button>
+                    </div>
+                    <div v-else>
+                        <a  style="color: white" href="/page/end/login.html"><el-button type="primary" size="mini">登录</el-button></a>
+                        <a href="/page/end/register.html"><el-button type="primary" size="mini">注册</el-button></a>
+                    </div>
+                </el-col>
+            </el-row>
+        </el-header>
+        <el-main class="el-main">
+            <el-card>
+                <div class="el-card__header">新闻</div>
+                <div class="el-card__body">
+                    <div class="info-block" v-for="item in resource" :key="item.id">
+                        <div class="info-item">
+                            <a :href="item.url" target="_blank">{{item.name}}</a>
+                        </div>
+                    </div>
+                </div>
+            </el-card>
+            <el-card>
+                <div class="el-card__header">科技</div>
+                <div class="el-card__body">
+                    <div class="info-block" v-for="item in program" :key="item.id">
+                        <div class="info-item">
+                            <a :href="item.url" target="_blank">{{item.name}}</a>
+                        </div>
+                    </div>
+                </div>
+            </el-card>
+            <el-card>
+                <div class="el-card__header">健康</div>
+                <div class="el-card__body">
+                    <div class="info-block" v-for="item in link" :key="item.id">
+                        <div class="info-item">
+                            <a :href="item.url" target="_blank">{{item.name}}</a>
+                        </div>
+                    </div>
+                </div>
+            </el-card>
+        </el-main>
+    </el-container>
+</div>
+
+<!--    js-->
+<script src="../../js/jquery.min.js"></script>
+
+<script src="../../js/vue.min.js"></script>
+<script src="../../js/element.js"></script>
+
+<script>
+    new Vue({
+        el: "#wrapper",
+        data: {
+            src: 'resource.html',
+            user: {},
+            tags: [],
+            resource: [],
+            program: [],
+            link: []
+        },
+        created() {
+            $.ajax({url: '/api/user/session', method: "GET", async: false, success: (res) => {this.user = res.data || {}}})
+            $.get("/api/tag").then(res => {
+                this.tags = res.data;
+            });
+            this.loadData()
+        },
+        methods: {
+            handleSelect(key) {
+                location.href = key;
+                // window.setInterval("reinitIframe()", 50);
+            },
+            logout() {
+                $.get("/api/user/logout");
+                sessionStorage.removeItem("user");
+                location.href = "/page/end/login.html";
+            },
+            loadData() {
+                let _this = this;
+                $.get("/api/link").then(res => {
+                    let result = res.data;
+                    result.forEach(item => {
+                        if ('新闻' === item.type) {
+                            _this.resource.push(item);
+                        }
+                        if ('科技' === item.type) {
+                            _this.program.push(item);
+                        }
+                        if ('健康' === item.type) {
+                            _this.link.push(item);
+                        }
+                    })
+                });
+                $.get("/api/user/" + this.user.id).then(res => {
+                    this.user = res.data
+                })
+            },
+            showImg(id) {
+                document.getElementById(id).style.display='block';
+            },
+            hideImg(id) {
+                document.getElementById(id).style.display='none';
+            }
+        }
+    })
+</script>
+</body>
+</html>

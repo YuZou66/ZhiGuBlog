@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta HTTP-EQUIV="pragma" CONTENT="no-cache">
+    <meta HTTP-EQUIV="Cache-Control" CONTENT="no-cache, must-revalidate">
+    <meta HTTP-EQUIV="expires" CONTENT="0">
+    <title>智谷_探索技术的无限可能！</title>
+    <link rel="stylesheet" href="../../css/element.css">
+    <link rel="stylesheet" href="../../css/base.css">
+    <style>
+        .el-divider__text {
+            background: #eee;
+        }
+    </style>
+</head>
+<body>
+<div id="wrapper" v-cloak>
+
+
+    <el-row :gutter="10">
+        <el-col :span="10">
+            <el-card>
+                <div id="view" style="width: 100%;height:500px; margin: 0 auto"></div>
+            </el-card>
+        </el-col>
+
+
+        <el-col :span="14">
+            <el-card>
+                <!-- 为ECharts准备一个具备大小（宽高）的Dom -->
+                <div id="click" style="width: 100%;height:500px; margin: 0 auto"></div>
+            </el-card>
+        </el-col>
+
+    </el-row>
+
+    <el-row style="padding: 5px 0">
+        <!--<el-col :span="24">
+            <el-card>
+                &lt;!&ndash; 为ECharts准备一个具备大小（宽高）的Dom &ndash;&gt;
+                <div id="polyline" style="width: 100%;height:400px; margin: 0 auto"></div>
+            </el-card>
+        </el-col>-->
+    </el-row>
+
+    <el-row style="padding: 5px 0">
+        <!--<el-col :span="24">
+            <el-card>
+                &lt;!&ndash; 为ECharts准备一个具备大小（宽高）的Dom &ndash;&gt;
+                <div id="bar" style="width: 100%;height:400px; margin: 0 auto"></div>
+            </el-card>
+        </el-col>-->
+    </el-row>
+
+
+</div>
+
+<script src="../../js/echarts.min.js"></script>
+<script src="../../js/china.js"></script>
+<script src="../../js/jquery.min.js"></script>
+<script src="../../js/vue.min.js"></script>
+<script src="../../js/element.js"></script>
+
+
+<script>
+    const userOption = {
+        title: {text: '用户统计'},
+        tooltip: {trigger: 'item'},
+        legend: {top: '5%', left: 'center'},
+        series: [
+            {
+                name: '地区',
+                type: 'pie',
+                radius: ['40%', '70%'],
+                avoidLabelOverlap: false,
+                itemStyle: {
+                    borderRadius: 10,
+                    borderColor: '#fff',
+                    borderWidth: 2
+                },
+                label: {
+                    show: true,
+                    position: 'center'
+                },
+                data: []
+            }
+        ]
+    };
+    const viewOption = {
+        title: {
+            text: '博客浏览量统计',
+            subtext: '',
+            left: 'center'
+        },
+        tooltip: {
+            trigger: 'item'
+        },
+        legend: {
+            orient: 'vertical',
+            left: 'left',
+        },
+        series: [
+            {
+                name: '阅读量',
+                type: 'pie',
+                radius: '50%',
+                data: [],
+                emphasis: {
+                    itemStyle: {
+                        shadowBlur: 10,
+                        shadowOffsetX: 0,
+                        shadowColor: 'rgba(0, 0, 0, 0.5)'
+                    }
+                }
+            }
+        ]
+    };
+
+
+
+
+
+    new Vue({
+        el: "#wrapper",
+        data: {
+            active: 0,
+            users: [],
+            roles: [],
+            permissions: [],
+            notices: [],
+            user: {},
+            tableData: [],
+            pageNum: 1,
+            pageSize: 10,
+            total: 0,
+            dialogFormVisible: false,
+            entity: {},
+            isCollapse: false
+        },
+        mounted() {
+            this.user = sessionStorage.getItem("user") ? JSON.parse(sessionStorage.getItem("user")) : {};
+            this.load();
+        },
+        methods: {
+            load() {
+                $.get("/api/notice/").then((res) => {
+                    this.notices = res.data;
+                });
+
+                // 基于准备好的dom，初始化echarts实例，用户统计
+                let viewChart = echarts.init(document.getElementById('view'));
+                $.ajax({
+                    url: "/api/user",
+                    success(res) {
+                        let address = Array.from(new Set(res.data.map(v => v.address)));
+                        address.forEach(item => {
+                            let count = res.data.filter(v => v.address === item).length;
+                            userOption.series[0].data.push({name: item, value: count})
+                        });
+                        // 使用刚指定的配置项和数据显示图表。
+                        viewChart.setOption(userOption);
+                    }
+                });
+
+                // 基于准备好的dom，初始化echarts实例，阅读量统计
+                let clickChart = echarts.init(document.getElementById('click'));
+                $.ajax({
+                    url: "/api/blog",
+                    success(res) {
+                        let tag = Array.from(new Set(res.data.map(v => v.tag)));
+                        tag.forEach(item => {
+                            let count = 0;
+                            res.data.filter(v => {
+                                if (v.tag === item) {
+                                    count += v.view;
+                                }
+                            });
+                            viewOption.series[0].data.push({name: item, value: count})
+                        });
+                        // 使用刚指定的配置项和数据显示图表。
+                        clickChart.setOption(viewOption);
+                    }
+                });
+
+
+                /* // 基于准备好的dom，初始化echarts实例
+                 let lineChart = echarts.init(document.getElementById('polyline'));
+                 // 使用刚指定的配置项和数据显示图表。
+                 lineChart.setOption(lineOption);
+
+                 // 基于准备好的dom，初始化echarts实例
+                 let barChart = echarts.init(document.getElementById('bar'));
+                 // 使用刚指定的配置项和数据显示图表。
+                 barChart.setOption(barOption);*/
+
+            },
+            handleCollapse() {
+                this.isCollapse = !this.isCollapse;
+            },
+            logout() {
+                $.get("/api/user/logout");
+                sessionStorage.removeItem("user");
+                location.href = "/page/end/login.html";
+            }
+        }
+    })
+</script>
+</body>
+</html>
