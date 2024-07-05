@@ -6,38 +6,37 @@
 
 首页区域
 
-![image-20240705121345011.png](https://s2.loli.net/2024/07/05/gPQBvA8m5aozjti.png)
+![image-20240705120558324.png](https://s2.loli.net/2024/07/05/ar39mKCZuTvJx6h.png)
+博客浏览区域：
 
+![_20240705123644.png](https://s2.loli.net/2024/07/05/92IE8CUo57hnyi6.png)
+![_20240705123648.png](https://s2.loli.net/2024/07/05/CoWL3PIyKNaMiQb.png)
 推荐区域
-
-![image-20240705120631985](C:\Users\24194\AppData\Roaming\Typora\typora-user-images\image-20240705120631985.png)
+![image-20240705120631985.png](https://s2.loli.net/2024/07/05/A7ruyXkdJHmSvj8.png)
 
 问答区域：
 
-![image-20240705121002829](C:\Users\24194\AppData\Roaming\Typora\typora-user-images\image-20240705121002829.png)
+![image-20240705121002829.png](https://s2.loli.net/2024/07/05/uv9OKa1HW8FQVkm.png)
 
 博客后台：
 
 数据统计：
 
-![image-20240705121242125](C:\Users\24194\AppData\Roaming\Typora\typora-user-images\image-20240705121242125.png)
+![image-20240705121242125.png](https://s2.loli.net/2024/07/05/WOJmy6sbnVvqHli.png)
 
 分类管理：
 
-![image-20240705121345011](C:\Users\24194\AppData\Roaming\Typora\typora-user-images\image-20240705121345011.png)
+![image-20240705121345011.png](https://s2.loli.net/2024/07/05/gPQBvA8m5aozjti.png)
 
 博客管理：
 
-![image-20240705121415325](C:\Users\24194\AppData\Roaming\Typora\typora-user-images\image-20240705121415325.png)
+![image-20240705121415325.png](https://s2.loli.net/2024/07/05/Upct2EBDMLwvXSZ.png)
 
-![image-20240705121440010](C:\Users\24194\AppData\Roaming\Typora\typora-user-images\image-20240705121440010.png)
-
-![image-20240705121456400](C:\Users\24194\AppData\Roaming\Typora\typora-user-images\image-20240705121456400.png)
-
+![image-20240705121440010.png](https://s2.loli.net/2024/07/05/BlrCOjnXHkNVy9d.png)
+![image-20240705121456400.png](https://s2.loli.net/2024/07/05/BE2PmH5NotOMRC3.png)
 问答管理：
 
-![image-20240705121544604](C:\Users\24194\AppData\Roaming\Typora\typora-user-images\image-20240705121544604.png)
-
+![image-20240705121544604.png](https://s2.loli.net/2024/07/05/fQSHu3Ae9ZD4caE.png)
 系统日志：
 
-![image-20240705121559105](C:\Users\24194\AppData\Roaming\Typora\typora-user-images\image-20240705121559105.png)
+![image-20240705121559105.png](https://s2.loli.net/2024/07/05/4AJYMRVglcHwS1n.png)
