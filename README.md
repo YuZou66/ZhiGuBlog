@@ -6,7 +6,7 @@
 
 首页区域
 
-![image-20240705120558324](C:\Users\24194\AppData\Roaming\Typora\typora-user-images\image-20240705120558324.png)
+![image-20240705121345011.png](https://s2.loli.net/2024/07/05/gPQBvA8m5aozjti.png)
 
 推荐区域
 
